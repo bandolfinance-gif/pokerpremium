@@ -20,8 +20,10 @@ export default async function handler(req, res) {
       },
     });
 
+    // ✅ Retorna a resposta para o cliente
     res.status(200).json(response);
   } catch (error) {
+    // ✅ Captura e retorna erro corretamente
     console.error('Erro na rota /api/payment:', error);
     res.status(500).json({ error: error.message });
   }
