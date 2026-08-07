@@ -1,26 +1,29 @@
-import { MercadoPagoConfig, Preference } from "mercadopago";
-
-const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 export default async function handler(req, res) {
   try {
-    const preference = new Preference(client);
+    // Inicializa o cliente Mercado Pago com o token de produção
+    const client = new MercadoPagoConfig({
+      accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN,
+    });
 
-    const result = await preference.create({
+    const payment = new Payment(client);
+
+    // Exemplo de criação de pagamento
+    const response = await payment.create({
       body: {
-        items: [
-          {
-            title: "Produto de teste",
-            unit_price: 10,
-            quantity: 1,
-          },
-        ],
+        transaction_amount: 1,
+        description: 'Teste de pagamento',
+        payment_method_id: 'pix',
+        payer: {
+          email: 'teste@example.com',
+        },
       },
     });
 
-    res.status(200).json({ id: result.id });
+    res.status(200).json(response);
   } catch (error) {
-    console.error(error);
+    console.error('Erro na rota /api/payment:', error);
     res.status(500).json({ error: error.message });
   }
 }
