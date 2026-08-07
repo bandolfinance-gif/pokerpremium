@@ -1,23 +1,24 @@
+// pages/api/webhook.js
+import { MercadoPagoConfig } from 'mercadopago';
+
 export default async function handler(req, res) {
   try {
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Método não permitido' });
-    }
+    // Inicializa o cliente Mercado Pago
+    const client = new MercadoPagoConfig({
+      accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN,
+    });
 
-    // O Mercado Pago envia notificações aqui
-    const body = req.body;
+    // O Mercado Pago envia notificações via POST
+    if (req.method === 'POST') {
+      const data = req.body;
 
-    console.log('Webhook recebido:', body);
+      // ✅ Aqui você pode tratar os eventos recebidos
+      // Exemplo: pagamento aprovado, recusado, etc.
+      console.log('Webhook recebido:', data);
 
-    // Exemplo: validar se veio o ID do pagamento
-    if (body && body.data && body.data.id) {
-      // Aqui você poderia consultar o pagamento no Mercado Pago usando o ID
-      // const paymentInfo = await mp.payment.get({ id: body.data.id });
-      // console.log('Pagamento consultado:', paymentInfo);
-
-      res.status(200).json({ message: 'Webhook processado com sucesso', id: body.data.id });
+      res.status(200).json({ message: 'Webhook recebido com sucesso', data });
     } else {
-      res.status(400).json({ error: 'Webhook inválido, sem ID de pagamento' });
+      res.status(405).json({ error: 'Método não permitido' });
     }
   } catch (error) {
     console.error('Erro na rota /api/webhook:', error);
