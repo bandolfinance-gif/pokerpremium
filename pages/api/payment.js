@@ -3,14 +3,12 @@ import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 export default async function handler(req, res) {
   try {
-    // Inicializa o cliente Mercado Pago com o token de produção
     const client = new MercadoPagoConfig({
       accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN,
     });
 
     const payment = new Payment(client);
 
-    // Exemplo de criação de pagamento PIX
     const response = await payment.create({
       body: {
         transaction_amount: 1,
