@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
     const payment = new Payment(client);
 
-    // Exemplo de criação de pagamento
+    // Exemplo de criação de pagamento PIX
     const response = await payment.create({
       body: {
         transaction_amount: 1,
