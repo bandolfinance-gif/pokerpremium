@@ -1,3 +1,4 @@
+// pages/api/payment.js
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 export default async function handler(req, res) {
